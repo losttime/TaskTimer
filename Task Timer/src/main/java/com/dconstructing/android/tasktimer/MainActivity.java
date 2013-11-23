@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
-	ArrayList<Task> thing = new ArrayList<Task>();
+	ArrayList<Task> taskList = new ArrayList<Task>();
 	Task currentTask;
 	ArrayAdapter<Task> listAdapter;
 
@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity {
 		ListView list = (ListView) findViewById(R.id.task_list);
 
 		if (savedInstanceState == null) {
-			listAdapter = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, thing);
+			listAdapter = new ArrayAdapter<Task>(this, android.R.layout.simple_list_item_1, taskList);
 			list.setAdapter(listAdapter);
 		}
 	}
@@ -35,11 +35,12 @@ public class MainActivity extends ActionBarActivity {
 		Time now = new Time(Time.TIMEZONE_UTC);
 		now.setToNow();
 
-		if (currentTask != null) {
-			int listSize = thing.size();
-			Task oldTask = thing.get(listSize);
+		int listSize = taskList.size();
+		if (listSize > 0) {
+			int lastIndex = listSize-1;
+			Task oldTask = taskList.get(lastIndex);
 			oldTask.endTime = now;
-			thing.add(listSize, oldTask);
+			//taskList.add(lastIndex, oldTask);
 		}
 
 		String taskName = "Nameless";
@@ -51,14 +52,14 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		Task newTask = new Task(now, taskName);
-		thing.add(newTask);
+		taskList.add(newTask);
 		listAdapter.notifyDataSetChanged();
 
 		editText.setText("");
 	}
 
 	public void clearClicked(View view) {
-		thing.clear();
+		taskList.clear();
 		listAdapter.notifyDataSetChanged();
 	}
 
